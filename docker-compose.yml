@@ -1,0 +1,30 @@
+version: "3"
+services:
+  client:
+    image: graphql-client
+    build: ./client
+    command: react-scripts start
+    links:
+      - server
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./client:/client
+    depends_on:
+      - server
+  server:
+    image: graphql-server
+    build: ./server
+    command: node app.js
+    links:
+      - mongo
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./server:/server
+    depends_on:
+      - "mongo"
+  mongo:
+    image: "mongo"
+    ports:
+      - "27017:27017"
